@@ -15,12 +15,75 @@ NOTES:
 
 #include <iostream>
 #include <malloc.h>
-
+void decsort1(struct student *, int, int);
 struct student {
 	char *name;
 	int score;
 };
 
-struct student ** topKStudents(struct student *students, int len, int K) {
-	return NULL;
+struct student **topKStudents(struct student *students, int len, int K) {
+	
+	int i,j;
+	struct student *temp,**result;
+
+	temp = (struct student*)malloc(1*sizeof(student));
+	result= (struct student**)malloc(len* sizeof(student));
+	for (i = 0; i < len; i++)
+	{
+		result[i] = &(students[i]);
+	}
+	if (K<0||K==0)
+		return NULL;
+
+	else if (K > len)
+		return result ;
+
+	else
+	{
+		/* for (i = 0; i < len - 1; i++)
+			if (students[i].name[0] > students[i + 1].name[0])
+				return NULL; */
+
+		decsort1(students, 0, len);
+
+	/*	for (i = 0; i < K; i++)
+			for (j = i + 1; j < K; j++)
+				if (students[i].name[0] > students[j].name[0])
+				{
+					*temp = *(students + i);
+					*(students + i) = *(students + j);
+					*(students + j) = *temp;
+				} */		
+		
+				return result;
+	}
+}
+void decsort1(struct student *students, int first, int last){
+	int pivot, j, i;
+	struct student temp;
+	if (first < last){
+		pivot = first;
+		i = first;
+		j = last;
+
+		while (i < j){
+			while (students[i].score >= students[pivot].score && i < last)
+				i++;
+			while (students[j].score < students[pivot].score)
+				j--;
+			if (i < j){
+				temp = *(students + i);
+				*(students + i) = *(students + j);
+				*(students + j) = temp;
+			}
+		}
+
+		temp = students[pivot];
+		students[pivot] = students[j];
+		students[j] = temp;
+
+		decsort1(students, first, j - 1);
+		decsort1(students, j + 1, last);
+
+	}
 }

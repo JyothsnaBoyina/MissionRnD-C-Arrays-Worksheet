@@ -14,12 +14,53 @@ NOTES:
 */
 
 #include <stdio.h>
-
+void decsort(struct student *, int, int);
 struct student {
 	char name[10];
 	int score;
 };
 
 void * scoresDescendingSort(struct student *students, int len) {
-	return NULL;
+	int i;
+	if (students == NULL||len<0)
+		return NULL;
+	
+	for (i = 0; i < len - 1; i++)
+		if (students[i].name[0]>students[i + 1].name[0])
+			return NULL;
+	
+	decsort(students, 0, len);
+	return students;
+
+	
+}
+
+void decsort(struct student *students, int first, int last){
+	int pivot, j, i;
+	struct student temp;
+	if (first < last){
+		pivot = first;
+		i = first;
+		j = last;
+
+		while (i < j){
+			while (students[i].score >= students[pivot].score && i < last)
+				i++;
+			while (students[j].score < students[pivot].score)
+				j--;
+			if (i < j){
+				temp = *(students + i);
+				*(students + i) = *(students + j);
+				*(students + j) = temp;
+			}
+		}
+
+		temp = students[pivot];
+		students[pivot] = students[j];
+		students[j] = temp;
+
+		decsort(students, first, j - 1);
+		decsort(students, j + 1, last);
+
+	}
 }
